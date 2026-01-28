@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 604cfca0e163a434e85eb620763d9f07
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - m_normalState: {fileID: 11400000, guid: 3368fa127d286a343815317e580605da, type: 2}
+  - m_lockedState: {fileID: 11400000, guid: f4566b8444687294f930e49f3b6d1a8a, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
