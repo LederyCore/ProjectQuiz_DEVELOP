@@ -22,6 +22,12 @@ Unity 클라이언트에서 자체 REST API 서버와 통신하며 동작합니�
 | 서버 연동 | 자체 REST API 서버 (`/server/status`, `/users/trylogin`, `/player_data/*`, `/game/ranking/*` 등) — 서버 자체는 별도 저장소 |
 | 에디터 툴링 | Unity `AssetPostprocessor` 기반 CSV → ScriptableObject 자동 변환기 |
 
+## 아키텍처
+
+레이어별로 책임을 분리하고, 계층 간에는 `SOEventSystem`(이벤트 채널)을 통해서만 느슨하게 통신합니다.
+
+![아키텍처 다이어그램](docs/architecture.svg)
+
 ## 핵심 구현 내용
 
 ### 1. ScriptableObject 기반 이벤트 드리븐 아키텍처
@@ -31,6 +37,8 @@ Unity 클라이언트에서 자체 REST API 서버와 통신하며 동작합니�
 ### 2. Task 리스트 기반 순차 비동기 초기화
 
 `LoadingSceneController`가 서버 상태 확인 → 최신 버전 확인 → 구글 로그인 → 리소스 다운로드 → 데이터 로드 순서를 `ITask` 인터페이스 리스트로 정의하고, 각 단계를 `await`로 순차 실행합니다. 한 단계라도 실패하면 즉시 중단하고 팝업 후 종료합니다. ([LoadingSceneController.cs](Scripts/Script/Core/SceneControll/LoadingSceneController.cs), [SceneControll](Scripts/Script/Core/SceneControll))
+
+![초기화 시퀀스 다이어그램](docs/init-sequence.svg)
 
 ### 3. CSV → ScriptableObject 자동 임포터
 

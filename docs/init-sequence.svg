@@ -1,0 +1,103 @@
+<svg viewBox="0 0 1000 950" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Malgun Gothic, sans-serif">
+  <defs>
+    <marker id="arrowIndigo2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#4338ca"/>
+    </marker>
+    <marker id="arrowSlate2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#334155"/>
+    </marker>
+    <marker id="arrowRed" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1000" height="950" fill="#ffffff"/>
+  <text x="500" y="36" text-anchor="middle" font-size="22" font-weight="700" fill="#111827">클라이언트 초기화 시퀀스 (LoadingSceneController)</text>
+  <text x="500" y="58" text-anchor="middle" font-size="13" fill="#6b7280">ITask 인터페이스 리스트를 순차적으로 await 실행 — 한 단계라도 실패하면 즉시 중단</text>
+
+  <!-- step boxes: x=160 width=520 height=70 -->
+  <!-- S0 -->
+  <rect x="160" y="85" width="520" height="60" rx="10" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+  <text x="420" y="120" text-anchor="middle" font-size="14" fill="#111827">Awake() → ExecuteProcess() 시작</text>
+  <line x1="420" y1="145" x2="420" y2="175" stroke="#4338ca" stroke-width="2" marker-end="url(#arrowIndigo2)"/>
+
+  <!-- S1~S5 (ITask 파이프라인) -->
+  <rect x="160" y="175" width="520" height="60" rx="10" fill="#ffffff" stroke="#4338ca" stroke-width="1.6"/>
+  <text x="420" y="210" text-anchor="middle" font-size="14" fill="#111827">① CheckServerStatusTask — 서버 상태 확인</text>
+  <line x1="420" y1="235" x2="420" y2="265" stroke="#4338ca" stroke-width="2" marker-end="url(#arrowIndigo2)"/>
+
+  <rect x="160" y="265" width="520" height="60" rx="10" fill="#ffffff" stroke="#4338ca" stroke-width="1.6"/>
+  <text x="420" y="300" text-anchor="middle" font-size="14" fill="#111827">② CheckLatestVersionTask — 최신 버전 확인</text>
+  <line x1="420" y1="325" x2="420" y2="355" stroke="#4338ca" stroke-width="2" marker-end="url(#arrowIndigo2)"/>
+
+  <rect x="160" y="355" width="520" height="60" rx="10" fill="#ffffff" stroke="#4338ca" stroke-width="1.6"/>
+  <text x="420" y="390" text-anchor="middle" font-size="14" fill="#111827">③ LoginTask — Google 로그인</text>
+  <line x1="420" y1="415" x2="420" y2="445" stroke="#4338ca" stroke-width="2" marker-end="url(#arrowIndigo2)"/>
+
+  <rect x="160" y="445" width="520" height="60" rx="10" fill="#ffffff" stroke="#4338ca" stroke-width="1.6"/>
+  <text x="420" y="480" text-anchor="middle" font-size="14" fill="#111827">④ ResourceDownloadTask — 리소스 다운로드</text>
+  <line x1="420" y1="505" x2="420" y2="535" stroke="#4338ca" stroke-width="2" marker-end="url(#arrowIndigo2)"/>
+
+  <rect x="160" y="535" width="520" height="60" rx="10" fill="#ffffff" stroke="#4338ca" stroke-width="1.6"/>
+  <text x="420" y="570" text-anchor="middle" font-size="14" fill="#111827">⑤ DataLoadTask — 플레이어 데이터 로드</text>
+  <line x1="420" y1="595" x2="420" y2="625" stroke="#4338ca" stroke-width="2" marker-end="url(#arrowIndigo2)"/>
+
+  <!-- S6 -->
+  <rect x="160" y="625" width="520" height="60" rx="10" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+  <text x="420" y="660" text-anchor="middle" font-size="14" fill="#111827">MainScene 로드 (Addressables.LoadSceneAsync)</text>
+  <line x1="420" y1="685" x2="420" y2="715" stroke="#4338ca" stroke-width="2" marker-end="url(#arrowIndigo2)"/>
+
+  <!-- S7 -->
+  <rect x="160" y="715" width="520" height="60" rx="10" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+  <text x="420" y="750" text-anchor="middle" font-size="14" fill="#111827">ManagersBootstraper — ManagerSO 목록 Init()</text>
+  <line x1="420" y1="775" x2="420" y2="805" stroke="#4338ca" stroke-width="2" marker-end="url(#arrowIndigo2)"/>
+
+  <!-- S8 -->
+  <rect x="160" y="805" width="520" height="60" rx="10" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+  <text x="420" y="840" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">GameManagerSO.GameStart() — 게임 시작</text>
+
+  <!-- ITask bracket -->
+  <line x1="145" y1="175" x2="145" y2="595" stroke="#6b7280" stroke-width="2"/>
+  <line x1="145" y1="175" x2="155" y2="175" stroke="#6b7280" stroke-width="2"/>
+  <line x1="145" y1="595" x2="155" y2="595" stroke="#6b7280" stroke-width="2"/>
+  <text x="125" y="385" text-anchor="middle" font-size="11" fill="#374151" transform="rotate(-90 125 385)">ITask 파이프라인 (순차 await 실행)</text>
+
+  <!-- failure branch -->
+  <rect x="10" y="347" width="120" height="76" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="1.6"/>
+  <text x="70" y="380" text-anchor="middle" font-size="12" font-weight="700" fill="#991b1b">실패 시</text>
+  <text x="70" y="398" text-anchor="middle" font-size="11" fill="#991b1b">팝업 표시 후</text>
+  <text x="70" y="413" text-anchor="middle" font-size="11" fill="#991b1b">Application.Quit()</text>
+  <line x1="145" y1="385" x2="133" y2="385" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="4,3" marker-end="url(#arrowRed)"/>
+
+  <!-- external annotations -->
+  <rect x="710" y="185" width="270" height="40" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="1.2"/>
+  <text x="845" y="209" text-anchor="middle" font-size="12" fill="#334155">REST API 서버 — GET /server/status</text>
+  <line x1="680" y1="205" x2="705" y2="205" stroke="#334155" stroke-width="1.5" marker-end="url(#arrowSlate2)"/>
+
+  <rect x="710" y="275" width="270" height="40" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="1.2"/>
+  <text x="845" y="299" text-anchor="middle" font-size="12" fill="#334155">REST API 서버 — 최신 버전 확인</text>
+  <line x1="680" y1="295" x2="705" y2="295" stroke="#334155" stroke-width="1.5" marker-end="url(#arrowSlate2)"/>
+
+  <rect x="710" y="360" width="270" height="55" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="1.2"/>
+  <text x="845" y="382" text-anchor="middle" font-size="12" fill="#334155">Google Sign-In 인증</text>
+  <text x="845" y="399" text-anchor="middle" font-size="12" fill="#334155">→ REST API POST /users/trylogin</text>
+  <line x1="680" y1="385" x2="705" y2="385" stroke="#334155" stroke-width="1.5" marker-end="url(#arrowSlate2)"/>
+
+  <rect x="710" y="455" width="270" height="40" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="1.2"/>
+  <text x="845" y="479" text-anchor="middle" font-size="12" fill="#334155">Addressables CDN — 리소스 다운로드/패치</text>
+  <line x1="680" y1="475" x2="705" y2="475" stroke="#334155" stroke-width="1.5" marker-end="url(#arrowSlate2)"/>
+
+  <rect x="710" y="545" width="270" height="40" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="1.2"/>
+  <text x="845" y="569" text-anchor="middle" font-size="12" fill="#334155">REST API 서버 — GET /player_data</text>
+  <line x1="680" y1="565" x2="705" y2="565" stroke="#334155" stroke-width="1.5" marker-end="url(#arrowSlate2)"/>
+
+  <rect x="710" y="635" width="270" height="40" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="1.2"/>
+  <text x="845" y="659" text-anchor="middle" font-size="12" fill="#334155">Addressables — 씬 비동기 로드 (progress)</text>
+  <line x1="680" y1="655" x2="705" y2="655" stroke="#334155" stroke-width="1.5" marker-end="url(#arrowSlate2)"/>
+
+  <rect x="710" y="725" width="270" height="40" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="1.2"/>
+  <text x="845" y="749" text-anchor="middle" font-size="12" fill="#334155">ManagerSO 목록 순회 SetActive(true)</text>
+  <line x1="680" y1="745" x2="705" y2="745" stroke="#334155" stroke-width="1.5" marker-end="url(#arrowSlate2)"/>
+
+  <text x="500" y="915" text-anchor="middle" font-size="12" fill="#6b7280">실선 화살표 = 실행 순서 · 점선 화살표 = 실패 시 예외 흐름</text>
+</svg>
